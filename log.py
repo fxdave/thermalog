@@ -6,11 +6,11 @@ import time
 
 
 first=True
-gpu_command = "nvidia-settings -q gpucoretemp | grep Attribute | cut -d':' -f4 | sed 's/[^0-9]//g'"
+gpu_command = "nvidia-smi -q | grep 'GPU Current Temp' | cut -d':' -f2"
 gpu_clocks_command = "nvidia-smi -q | grep 'MHz' | cut -d':' -f2 | head -n4"
 
 while True:
-    gpu = int(os.popen(gpu_command).read())
+    gpu = int(os.popen(gpu_command).read().replace("C",""))
     gpu_freq = os.popen(gpu_clocks_command).read().strip().split('\n')
     cpu_freq = psutil.cpu_freq().current
     cpu = [
